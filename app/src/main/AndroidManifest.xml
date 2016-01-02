@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fashionove.stvisionary.business.fashionovepartner" >
 
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,6 +18,26 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ChooseTemplate"
+            android:label="@string/title_activity_choose_template" >
+        </activity>
+        <activity
+            android:name=".AddContact"
+            android:label="@string/title_activity_add_contact" >
+        </activity>
+        <activity
+            android:name=".ContactList"
+            android:label="@string/title_activity_contact_list" >
+        </activity>
+        <activity
+            android:name=".ContactPickerActivity"
+            android:label="@string/title_activity_contact_picker" >
+        </activity>
+        <activity
+            android:name=".MultiPicker"
+            android:label="@string/title_activity_multi_picker" >
         </activity>
     </application>
 
