@@ -12,5 +12,8 @@
     <string name="title_activity_multi_picker">MultiPicker</string>
     <string name="showContacts">Show contacts</string>
     <string name="chooseContact">Choose contacts to display</string>
-
+    <string name="title_activity_fb">FBActivity</string>
+    <string name="facebook_app_id">477714965747630</string>
+    <string name="app_name_main">MainActivity</string>
+    <string name="title_activity_start_up_screen">StartUpScreen</string>
 </resources>

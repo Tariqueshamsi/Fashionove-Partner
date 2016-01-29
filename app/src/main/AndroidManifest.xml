@@ -4,40 +4,62 @@
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider477714965747630"
+            android:exported="true" />
+
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:screenOrientation="portrait" >
+>
+
+        </activity>
+        <activity
+            android:name=".ChooseTemplate"
+            android:label=" " >
+        </activity>
+        <activity
+            android:name=".AddContact"
+            android:label=" " >
+        </activity>
+        <activity
+            android:name=".ContactList"
+            android:label=" " >
+        </activity>
+        <activity
+            android:name=".ContactPickerActivity"
+            android:label=" " >
+        </activity>
+        <activity
+            android:name=".MultiPicker"
+            android:label="@string/title_activity_multi_picker" >
+        </activity>
+        <activity
+            android:name=".StartUpScreen"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".ChooseTemplate"
-            android:label="@string/title_activity_choose_template" >
-        </activity>
-        <activity
-            android:name=".AddContact"
-            android:label="@string/title_activity_add_contact" >
-        </activity>
-        <activity
-            android:name=".ContactList"
-            android:label="@string/title_activity_contact_list" >
-        </activity>
-        <activity
-            android:name=".ContactPickerActivity"
-            android:label="@string/title_activity_contact_picker" >
-        </activity>
-        <activity
-            android:name=".MultiPicker"
-            android:label="@string/title_activity_multi_picker" >
         </activity>
     </application>
 
