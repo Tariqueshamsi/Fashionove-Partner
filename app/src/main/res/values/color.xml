@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#C71B43</color>
+    <color name="colorPrimaryDark">#C5012E</color>
+    <color name="colorDivider">#B6B6B6</color>
+    <color name="colorAccent">#FFFFFF</color>
+    <color name="colorYellow">#80FFFF00</color>
+
+    <color name="colorPrimaryDarkHome">#060424</color>
+    <color name="colorPrimaryHome">#0F0D30</color>
+    <color name="colorWhite">#FFFFFF</color>
+
+    <color name="colorBackgroundLogin">#0F0D30</color>
+
+    <color name="textColorHint">#BBB9DE</color>
+    <color name="colorView">#BBB9DE</color>
+    <color name="dividerNavigation">#B1B1B1</color>
+    <color name="colorHighlight">#B6B6B6</color>
+    <color name="text_shadow">#7F000000</color>
+    <color name="color_Ripple">#CFCFCF</color>
+
+    <color name="textColorNavigation">#999999</color>
+
+    <color name="textRatingColor">#08071E</color>
+
+    <color name="storeContactColor">#6D40FF</color>
+   <color name="storeCollectionColor">#FF4056</color>
+
+    <color name="colorAccord">#E0DFFF</color>
+    <color name="colorCategoryRatingText">#999999</color>
+
+
+    <color name="colorFilterBackground">#0F0D30</color>
+    <color name="colorFilterView">#FF4056</color>
+    <color name="colorFilterLayoutBackground">#F5FCF3</color>
+    <color name="colorFilterTextBeforePressed">#FFFFFF</color>
+    <color name="colorFiltertextAfterPressed">#535353</color>
+
+    <color name="colorFilterBrandsTextBeforePressed">#555555</color>
+    <color name="colorFilterBrandsTextAfterPressed">#FFFFFF</color>
+    <color name="colorFilterBrandsButtonBeforePressed">#FFFFFF</color>
+    <color name="colorFilterBrandsButtonAfterPressed">#0F0D30</color>
+
+
+    <color name="colorFilterCategoryTextChecked">#313131</color>
+    <color name="colorFilterCategoryTextUnchecked">#6C6C6C</color>
+
+    <color name="buttonBackgroundColorBrandGrid">#C9C5F7</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="storeOpeningHours">#008000</color>
+    <color name="storeOpeningHoursClosed">#e50000</color>
+    <color name="highlightDark">#000000</color>
+    <color name="highlightLight">#808080</color>
+
+    <color name="searchBrands">#FF4081</color>
+    <color name="searchStores">#198C19</color>
+    <color name="searchProducts">#6D40FF</color>
+    <color name="colorTransparent">#FFFFFFFF</color>
+    <color name="colorHeader">#060424</color>
+</resources>

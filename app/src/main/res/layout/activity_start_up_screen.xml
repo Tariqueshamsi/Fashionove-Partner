@@ -1,0 +1,21 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryHome"
+    tools:context="com.fashionove.stvisionary.business.fashionovepartne.StartUpScreen"
+    android:weightSum="1">
+
+
+    <ImageView
+        android:src="@drawable/ic_logo_fashionove_new_big"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="20dp"
+        android:shadowColor="#FFFFFF"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="20"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>
