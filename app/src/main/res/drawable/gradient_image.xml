@@ -8,4 +8,11 @@
         android:startColor="#66000000" />
 
     <corners android:radius="0dp" />
+
+    <solid android:color="@android:color/transparent" />
+    <corners
+        android:bottomLeftRadius="@dimen/cornerRadiusSmsCategory"
+        android:bottomRightRadius="@dimen/cornerRadiusSmsCategory"
+        android:topLeftRadius="@dimen/cornerRadiusSmsCategory"
+        android:topRightRadius="@dimen/cornerRadiusSmsCategory" />
 </shape>

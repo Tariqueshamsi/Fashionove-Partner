@@ -1,0 +1,15 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fashionove.stvisionary.business.fashionovepartner.Fragment.FragmentSmsCategory">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/categoryList"
+        android:background="#d5e0ec"
+        android:clipToPadding="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+
+</RelativeLayout>
