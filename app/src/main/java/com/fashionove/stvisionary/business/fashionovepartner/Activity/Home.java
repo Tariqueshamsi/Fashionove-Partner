@@ -1,10 +1,12 @@
 package com.fashionove.stvisionary.business.fashionovepartner.Activity;
 
+
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -43,11 +45,22 @@ public class Home extends AppCompatActivity {
     private RelativeLayout layoutFacebook;
     private RelativeLayout layoutSms;
 
+    String vendorName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        SharedPreferences vendorData = PreferenceManager.getDefaultSharedPreferences(this);
+        vendorName = vendorData.getString("vendor_name","");
+        if(vendorName.isEmpty() == false)
+        {
+            getSupportActionBar().setTitle(vendorName);
+        }else {
+            getSupportActionBar().setTitle("");
+        }
+
 
         FacebookSdk.sdkInitialize(getApplicationContext());
 

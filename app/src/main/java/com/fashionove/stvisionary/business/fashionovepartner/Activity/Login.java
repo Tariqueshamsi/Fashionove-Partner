@@ -36,6 +36,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.fashionove.stvisionary.business.fashionovepartner.Extras.Keys.Endpoint.KEY_ACCESS_TOKEN;
+import static com.fashionove.stvisionary.business.fashionovepartner.Extras.Keys.Endpoint.KEY_VENDOR_COMPANY;
+import static com.fashionove.stvisionary.business.fashionovepartner.Extras.Keys.Endpoint.KEY_VENDOR_EMAIL;
+import static com.fashionove.stvisionary.business.fashionovepartner.Extras.Keys.Endpoint.KEY_VENDOR_ID;
+import static com.fashionove.stvisionary.business.fashionovepartner.Extras.Keys.Endpoint.KEY_VENDOR_NAME;
+import static com.fashionove.stvisionary.business.fashionovepartner.Extras.Keys.Endpoint.KEY_VENDOR_PHONE;
+import static com.fashionove.stvisionary.business.fashionovepartner.Extras.LinkDetails.URL.URL_AUTHENTICATED_VENDOR;
 import static com.fashionove.stvisionary.business.fashionovepartner.Extras.LinkDetails.URL.URL_VENDOR_LOGIN;
 import static com.fashionove.stvisionary.business.fashionovepartner.Extras.Keys.Endpoint.KEY_DATA;
 
@@ -72,7 +78,6 @@ public class Login extends AppCompatActivity {
         passwordText = (EditText) findViewById(R.id.input_password);
 
         loginButton = (Button) findViewById(R.id.loginButton);
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,7 +225,8 @@ public class Login extends AppCompatActivity {
 
                                 Toast.makeText(getApplicationContext(), "Access Token = " + accessToken, Toast.LENGTH_SHORT).show();
                                 //server request to get the client details
-                                // callServerForClientData(getUrl(accessToken));
+                                 callServerForVendorData(getUrl(accessToken));
+
 
 
                             } else {
@@ -292,15 +298,10 @@ public class Login extends AppCompatActivity {
 
         if (response != null && response.length() > 0) {
             try {
-                if (response.has(KEY_DATA) && !response.isNull(KEY_DATA)) {
-                    JSONObject object = response.getJSONObject(KEY_DATA);
-
-                    if (object.has(KEY_ACCESS_TOKEN) && !object.isNull(KEY_ACCESS_TOKEN)) {
-                        accessToken = object.getString(KEY_ACCESS_TOKEN);
+                    if (response.has(KEY_ACCESS_TOKEN) && !response.isNull(KEY_ACCESS_TOKEN)) {
+                        accessToken = response.getString(KEY_ACCESS_TOKEN);
 
                     }
-
-                }
 
             } catch (JSONException e) {
 
@@ -308,6 +309,124 @@ public class Login extends AppCompatActivity {
         }
 
         return accessToken;
+
+    }
+
+    public String getUrl(String accessToken)
+    {
+        String URL = "";
+
+            URL = URL_AUTHENTICATED_VENDOR + "?token=" + accessToken;
+
+        return URL;
+    }
+
+    public void callServerForVendorData(String url)
+    {
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                url,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        //parse outlet json and store in local
+                        if (parseJsonDataForOutletData(response) == true) {
+                            //login successfull
+                            //open new intent
+                            Intent intent = new Intent(Login.this, Home.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+
+                        }
+
+                    }
+                }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    //Toast.makeText(getApplicationContext(),"Invalid user Id", Toast.LENGTH_LONG).show();
+                    showSnackBar("Please check your data connection.");
+                }
+            }
+        });
+
+        requestQueue.add(request);
+
+    }
+
+    public boolean parseJsonDataForOutletData(JSONObject response)
+    {
+        String vendorId = "";
+        String vendorName = "";
+        String vendorEmail = "";
+        String vendorCompany = "";
+        String vendorPhone = "";
+        boolean flag = false;
+
+        if(response != null && response.length() > 0)
+        {
+            try {
+
+                if(response.has(KEY_DATA) && !response.isNull(KEY_DATA))
+                {
+                    flag = true;
+                    JSONObject jsonObject = response.getJSONObject(KEY_DATA);
+
+                    // vendor id
+                    if(jsonObject.has(KEY_VENDOR_ID) && !jsonObject.isNull(KEY_VENDOR_ID))
+                    {
+                        vendorId = jsonObject.getString(KEY_VENDOR_ID);
+                    }
+
+                    //ventor name
+                    if(jsonObject.has(KEY_VENDOR_NAME) && !jsonObject.isNull(KEY_VENDOR_NAME))
+                    {
+                        vendorName = jsonObject.getString(KEY_VENDOR_NAME);
+                    }
+
+                    //vendor email
+                    if(jsonObject.has(KEY_VENDOR_EMAIL) && !jsonObject.isNull(KEY_VENDOR_EMAIL))
+                    {
+                        vendorEmail = jsonObject.getString(KEY_VENDOR_EMAIL);
+                    }
+
+                    //vendor company
+                    if(jsonObject.has(KEY_VENDOR_COMPANY) && !jsonObject.isNull(KEY_VENDOR_COMPANY))
+                    {
+                        vendorCompany = jsonObject.getString(KEY_VENDOR_COMPANY);
+                    }
+
+                    //vendor phone
+                    if(jsonObject.has(KEY_VENDOR_PHONE) && !jsonObject.isNull(KEY_VENDOR_PHONE))
+                    {
+                        vendorPhone = jsonObject.getString(KEY_VENDOR_PHONE);
+                    }
+
+                    //save as local data
+                    SharedPreferences vendorData = PreferenceManager.getDefaultSharedPreferences(Login.this);
+                    SharedPreferences.Editor editor = vendorData.edit();
+                    editor.putString("vendor_id",vendorId);
+                    editor.putString("vendor_name",vendorName);
+                    editor.putString("vendor_email",vendorEmail);
+                    editor.putString("vendor_company",vendorCompany);
+                    editor.putString("vendor_phone",vendorPhone);
+                    editor.apply();
+
+
+
+
+                }
+
+
+            }catch (JSONException e){
+
+            }
+        }
+
+        return flag;
 
     }
 

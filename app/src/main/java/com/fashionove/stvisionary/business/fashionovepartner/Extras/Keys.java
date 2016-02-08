@@ -16,5 +16,13 @@ public interface Keys {
         public static final String KEY_SMS_TEMPLATE_ID = "template_id";
         public static final String KEY_SMS_TEMPLATE_NAME = "template_name";
 
+        public static final String KEY_VENDOR_ID = "vendor_id";
+        public static final String KEY_VENDOR_NAME = "vendor_name";
+        public static final String KEY_VENDOR_EMAIL = "vendor_email";
+        public static final String KEY_VENDOR_COMPANY = "vendor_company";
+        public static final String KEY_VENDOR_PHONE = "vendor_phone";
+
+
+
     }
 }

@@ -10,6 +10,7 @@ public interface LinkDetails {
         public static final String URL_SERVER = "192.168.1.14";
 
         public static final String URL_VENDOR_LOGIN = "http://" +URL_SERVER+ "/fashionove_template/public/api/v1/vendor/authenticate";
+        public static final String URL_AUTHENTICATED_VENDOR = "http://" +URL_SERVER+ "/fashionove_template/public/api/v1/vendor/authenticated_user";
 
         public static final String URL_SMS_CATEGORY = "http://" +URL_SERVER+ "/fashionove_template/public/api/v1/category";
         public static final String URL_SMS_CATEGORY_PHOTOS = "http://" +URL_SERVER+ "/fashionove_template/public/uploads/category/";
