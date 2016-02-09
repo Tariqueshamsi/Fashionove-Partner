@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context="com.fashionove.stvisionary.business.fashionovepartner.Activity.SetupSms">
+    tools:context="com.fashionove.stvisionary.business.partner.Activity.SetupSms">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -186,5 +186,12 @@
         </RelativeLayout>
 
     </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/layoutContactFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </RelativeLayout>
 
 </RelativeLayout>

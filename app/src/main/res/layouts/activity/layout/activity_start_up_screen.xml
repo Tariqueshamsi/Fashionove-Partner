@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryHome"
-    tools:context="com.fashionove.stvisionary.business.fashionovepartner.Activity.StartUpScreen">
+    tools:context="com.fashionove.stvisionary.business.partner.Activity.StartUpScreen">
 
 
     <ImageView
