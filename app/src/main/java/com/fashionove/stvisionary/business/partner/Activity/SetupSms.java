@@ -41,7 +41,7 @@ public class SetupSms extends AppCompatActivity {
         addContactLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //open contact choose layout
+                //open ContactData choose layout
                 openContactFragmnet();
             }
         });
@@ -49,7 +49,7 @@ public class SetupSms extends AppCompatActivity {
         sendSmsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //send sms to all the contact choosen
+                //send sms to all the ContactData choosen
             }
         });
 
