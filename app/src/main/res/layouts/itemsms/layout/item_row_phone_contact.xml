@@ -16,6 +16,7 @@
             android:layout_centerVertical="true"
             android:id="@+id/drawable_image"/>
 
+       
         <TextView
             android:id="@+id/contactName"
             android:layout_toRightOf="@+id/drawable_image"
