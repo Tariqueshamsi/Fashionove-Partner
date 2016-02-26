@@ -9,16 +9,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fashionove.stvisionary.business.partner.Extras.ActivityCommunicator;
 import com.fashionove.stvisionary.business.partner.Fragment.FragmentChooseContact;
+import com.fashionove.stvisionary.business.partner.GetterSetter.ContactData;
 import com.fashionove.stvisionary.business.partner.R;
 
-public class SetupSms extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class SetupSms extends AppCompatActivity implements ActivityCommunicator {
 
     String templateName = "";
     private RelativeLayout addContactLayout;
     private RelativeLayout sendSmsLayout;
+
+    private TextView numberContactChoosen;
     private FragmentManager manager;
     int pop = 0;
 
@@ -37,6 +44,7 @@ public class SetupSms extends AppCompatActivity {
 
         addContactLayout = (RelativeLayout) findViewById(R.id.addContactNumber);
         sendSmsLayout = (RelativeLayout) findViewById(R.id.sendSms);
+        numberContactChoosen = (TextView)findViewById(R.id.numberContactChoosen);
 
         addContactLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +66,10 @@ public class SetupSms extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_setup_sms, menu);
+
+        MenuItem itemDone = menu.findItem(R.id.done_item);
+        itemDone.setVisible(false);
 
         return true;
     }
@@ -91,6 +102,7 @@ public class SetupSms extends AppCompatActivity {
             return true;
         }
 
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -122,6 +134,18 @@ public class SetupSms extends AppCompatActivity {
 
         }else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void passDataToActivity(ArrayList<ContactData> contactList) {
+        //now send the data to the server
+       // Toast.makeText(this,"Chosen Number = "+contactList.size(),Toast.LENGTH_SHORT).show();
+        if(contactList.size() == 0)
+        {
+            numberContactChoosen.setText("0");
+        }else {
+            numberContactChoosen.setText(String.valueOf(contactList.size()));
         }
     }
 }

@@ -7,6 +7,7 @@ public class ContactData {
 
     private String name = "";
     private String number = "";
+    private boolean isSelected = false;
     private int ViewType = 0;
 
     public String getName() {
@@ -23,6 +24,14 @@ public class ContactData {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public boolean getIsSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 
     public int getViewType() {

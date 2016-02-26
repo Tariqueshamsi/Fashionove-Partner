@@ -55,12 +55,12 @@ public class StartUpScreen extends AppCompatActivity {
 
     public void openIntent() {
         if (checkForAlreadyLogined()) {
-            Intent intent = new Intent(this, SetupSms.class);
+            Intent intent = new Intent(this, Home.class);
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
 
         } else {
-            Intent nextScreen = new Intent(StartUpScreen.this,SetupSms.class);
+            Intent nextScreen = new Intent(StartUpScreen.this,Home.class);
             //nextScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(nextScreen);
 

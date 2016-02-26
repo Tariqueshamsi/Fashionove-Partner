@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -73,9 +75,10 @@ public class AdapterPhoneContact extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
-        ContactData data;
+        final ContactData data;
+        final int pos = position;
 
         switch (holder.getItemViewType()) {
             case ViewTypeCategory:
@@ -84,6 +87,45 @@ public class AdapterPhoneContact extends RecyclerView.Adapter<RecyclerView.ViewH
                 String c = data.getName().charAt(0) + "";
                 setDrawable(((ViewHolderContact) holder).drawableImage, c.trim());
                 ((ViewHolderContact) holder).contactName.setText(data.getName());
+
+                ((ViewHolderContact) holder).checkBox.setChecked(data.getIsSelected());
+                ((ViewHolderContact) holder).checkBox.setTag(data);
+
+                ((ViewHolderContact) holder).checkBox.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        CheckBox cb = (CheckBox) v;
+                        ContactData contact = (ContactData) cb.getTag();
+
+                        contact.setIsSelected(cb.isChecked());
+                        listData.get(pos).setIsSelected(cb.isChecked());
+
+                    }
+                });
+
+            /*    if (data.getChecked() == 0) {
+                    ((ViewHolderContact) holder).checkBox.setChecked(false);
+                } else if (data.getChecked() == 1) {
+                    ((ViewHolderContact) holder).checkBox.setChecked(true);
+                }
+
+                ((ViewHolderContact) holder).checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                        if (isChecked == true ) {
+                            ((ViewHolderContact) holder).checkBox.setChecked(true);
+                            data.setChecked(1);
+
+                        } else if(isChecked == false ){
+                            ((ViewHolderContact) holder).checkBox.setChecked(false);
+                            data.setChecked(0);
+                        }
+                    }
+                });
+                */
+
                 break;
         }
     }
@@ -119,12 +161,14 @@ public class AdapterPhoneContact extends RecyclerView.Adapter<RecyclerView.ViewH
 
         ImageView drawableImage;
         TextView contactName;
+        CheckBox checkBox;
 
         public ViewHolderContact(View itemView) {
             super(itemView);
 
             drawableImage = (ImageView) itemView.findViewById(R.id.drawable_image);
             contactName = (TextView) itemView.findViewById(R.id.contactName);
+            checkBox = (CheckBox) itemView.findViewById(R.id.contactChooser);
 
         }
     }
