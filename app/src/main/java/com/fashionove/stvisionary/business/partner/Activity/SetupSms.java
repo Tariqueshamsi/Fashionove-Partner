@@ -12,14 +12,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fashionove.stvisionary.business.partner.Extras.ActivityCommunicator;
+
 import com.fashionove.stvisionary.business.partner.Fragment.FragmentChooseContact;
 import com.fashionove.stvisionary.business.partner.GetterSetter.ContactData;
 import com.fashionove.stvisionary.business.partner.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class SetupSms extends AppCompatActivity implements ActivityCommunicator {
+public class SetupSms extends AppCompatActivity implements FragmentChooseContact.ActivityCommunicator {
 
     String templateName = "";
     private RelativeLayout addContactLayout;
@@ -28,6 +29,8 @@ public class SetupSms extends AppCompatActivity implements ActivityCommunicator 
     private TextView numberContactChoosen;
     private FragmentManager manager;
     int pop = 0;
+
+    ArrayList<ContactData> listContact = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,7 @@ public class SetupSms extends AppCompatActivity implements ActivityCommunicator 
 
         addContactLayout = (RelativeLayout) findViewById(R.id.addContactNumber);
         sendSmsLayout = (RelativeLayout) findViewById(R.id.sendSms);
-        numberContactChoosen = (TextView)findViewById(R.id.numberContactChoosen);
+        numberContactChoosen = (TextView) findViewById(R.id.numberContactChoosen);
 
         addContactLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +135,7 @@ public class SetupSms extends AppCompatActivity implements ActivityCommunicator 
             manager.popBackStackImmediate();
             transaction.commit();
 
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -140,12 +143,11 @@ public class SetupSms extends AppCompatActivity implements ActivityCommunicator 
     @Override
     public void passDataToActivity(ArrayList<ContactData> contactList) {
         //now send the data to the server
-       // Toast.makeText(this,"Chosen Number = "+contactList.size(),Toast.LENGTH_SHORT).show();
-        if(contactList.size() == 0)
-        {
-            numberContactChoosen.setText("0");
-        }else {
-            numberContactChoosen.setText(String.valueOf(contactList.size()));
+        // Toast.makeText(this,"Chosen Number = "+contactList.size(),Toast.LENGTH_SHORT).show();
+        this.listContact = contactList;
+        if (listContact != null) {
+            numberContactChoosen.setText(String.valueOf(listContact.size()));
         }
+
     }
 }

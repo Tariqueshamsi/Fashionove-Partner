@@ -2,6 +2,7 @@ package com.fashionove.stvisionary.business.partner.Fragment;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -10,7 +11,6 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,12 +21,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.fashionove.stvisionary.business.partner.Activity.SetupSms;
 import com.fashionove.stvisionary.business.partner.Adapter.AdapterPhoneContact;
-import com.fashionove.stvisionary.business.partner.Extras.ActivityCommunicator;
+
 import com.fashionove.stvisionary.business.partner.GetterSetter.ContactData;
 import com.fashionove.stvisionary.business.partner.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -40,12 +44,6 @@ public class FragmentChooseContact extends Fragment {
     private LinearLayoutManager manager;
 
     private ActivityCommunicator activityCommunicator;
-    public Context context;
-
-    private static final int INVALID_POSITION = -1;
-    private int mActivatedPosition = INVALID_POSITION;
-    private AdapterPhoneContact mAdapter;
-    private ActionMode mActionMode;
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
@@ -54,12 +52,21 @@ public class FragmentChooseContact extends Fragment {
         // Required empty public constructor
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        context = getActivity();
-        activityCommunicator = (ActivityCommunicator)context;
+    public interface ActivityCommunicator {
+        public void passDataToActivity(ArrayList<ContactData> contactList);
+    }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            activityCommunicator = (ActivityCommunicator) activity;
+
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement ActivityCommunicator");
+        }
     }
 
     @Override
@@ -102,7 +109,7 @@ public class FragmentChooseContact extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        recyclerView = (RecyclerView)getActivity().findViewById(R.id.contactList);
+        recyclerView = (RecyclerView) getActivity().findViewById(R.id.contactList);
         adapter = new AdapterPhoneContact(getActivity());
         recyclerView.setAdapter(adapter);
         manager = new LinearLayoutManager(getActivity());
@@ -113,8 +120,7 @@ public class FragmentChooseContact extends Fragment {
 
     }
 
-    public void checkPermissionForContact()
-    {
+    public void checkPermissionForContact() {
 
         // Check the SDK version and whether the permission is already granted or not.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -122,13 +128,13 @@ public class FragmentChooseContact extends Fragment {
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
-                readContactFromPhone();
+            readContactFromPhone();
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-       // super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -143,12 +149,10 @@ public class FragmentChooseContact extends Fragment {
         }
     }
 
-    public void readContactFromPhone()
-    {
+    public void readContactFromPhone() {
         Cursor phones = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-        while (phones.moveToNext())
-        {
-            String name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+        while (phones.moveToNext()) {
+            String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
             ContactData contactData = new ContactData();
@@ -158,7 +162,7 @@ public class FragmentChooseContact extends Fragment {
             contactData.setViewType(1);
             contactList.add(contactData);
             Log.i("Name : ", name);
-            Log.i("Number : ",phoneNumber);
+            Log.i("Number : ", phoneNumber);
 
         }
         phones.close();
@@ -166,24 +170,27 @@ public class FragmentChooseContact extends Fragment {
         adapter.setPhoneContactData(contactList);
     }
 
-    public void checkedTheCheckedItem()
-    {
+    public void checkedTheCheckedItem() {
         ArrayList<ContactData> listContact = new ArrayList<>();
-        int j =0;
-        for(int i=0;i<contactList.size();i++)
-        {
+
+        for (int i = 0; i < contactList.size(); i++) {
             ContactData contactData = contactList.get(i);
-            if(contactData.getIsSelected() == true)
-            {
-                j++;
-               // Log.i("Checked : "+contactData.getName() ,contactData.getNumber());
+            if (contactData.getIsSelected() == true) {
+                // Log.i("Checked : "+contactData.getName() ,contactData.getNumber());
                 listContact.add(contactData);
             }
         }
 
-        //send the data to the activity class
-        activityCommunicator.passDataToActivity(listContact);
-        getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+        Toast.makeText(getActivity(), "Size = " + listContact.size(), Toast.LENGTH_SHORT).show();
+        if (listContact != null && listContact.size() > 0 && activityCommunicator != null) {
+            //send the data to the activity class
+            activityCommunicator.passDataToActivity(listContact);
+
+            getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+        } else {
+            Toast.makeText(getActivity(), "Please select contacts.", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
