@@ -27,6 +27,7 @@ public class SetupSms extends AppCompatActivity implements FragmentChooseContact
     private RelativeLayout sendSmsLayout;
 
     private TextView numberContactChoosen;
+    private TextView smsDetails;
     private FragmentManager manager;
     int pop = 0;
 
@@ -48,6 +49,7 @@ public class SetupSms extends AppCompatActivity implements FragmentChooseContact
         addContactLayout = (RelativeLayout) findViewById(R.id.addContactNumber);
         sendSmsLayout = (RelativeLayout) findViewById(R.id.sendSms);
         numberContactChoosen = (TextView) findViewById(R.id.numberContactChoosen);
+        smsDetails = (TextView)findViewById(R.id.smsDetail);
 
         addContactLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +65,11 @@ public class SetupSms extends AppCompatActivity implements FragmentChooseContact
                 //send sms to all the ContactData choosen
             }
         });
+
+        if (templateName.isEmpty() == false)
+        {
+            smsDetails.setText(templateName);
+        }
 
     }
 
