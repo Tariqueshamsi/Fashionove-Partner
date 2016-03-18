@@ -214,7 +214,7 @@ public class Login extends AppCompatActivity {
                                 editor.putString("access_token", accessToken);
                                 editor.apply();
 
-                                Toast.makeText(getApplicationContext(), "Access Token = " + accessToken, Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(getApplicationContext(), "Access Token = " + accessToken, Toast.LENGTH_SHORT).show();
                                 //server request to get the client details
                                  callServerForVendorData(getUrl(accessToken));
 
@@ -324,6 +324,9 @@ public class Login extends AppCompatActivity {
                         //parse outlet json and store in local
                         if (parseJsonDataForOutletData(response) == true) {
                             //login successfull
+                            SharedPreferences vendorData = PreferenceManager.getDefaultSharedPreferences(Login.this);
+                            SharedPreferences.Editor editor = vendorData.edit();
+                            editor.putBoolean("logged_in",true);
                             //open new intent
                             Intent intent = new Intent(Login.this, Home.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

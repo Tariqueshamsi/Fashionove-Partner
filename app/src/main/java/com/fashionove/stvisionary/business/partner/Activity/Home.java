@@ -52,11 +52,10 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         SharedPreferences vendorData = PreferenceManager.getDefaultSharedPreferences(this);
-        vendorName = vendorData.getString("vendor_name","");
-        if(vendorName.isEmpty() == false)
-        {
+        vendorName = vendorData.getString("vendor_name", "");
+        if (vendorName.isEmpty() == false) {
             getSupportActionBar().setTitle(vendorName);
-        }else {
+        } else {
             getSupportActionBar().setTitle("");
         }
 
@@ -105,7 +104,18 @@ public class Home extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        if (item.getItemId() == R.id.logout)
+        {
 
+            SharedPreferences vendorData = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = vendorData.edit();
+            editor.putBoolean("logged_in",false);
+
+            Intent nextScreen = new Intent(Home.this,Login.class);
+            nextScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(nextScreen);
+
+        }
 
         return super.onOptionsItemSelected(item);
     }

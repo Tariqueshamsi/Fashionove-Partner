@@ -3,8 +3,10 @@ package com.fashionove.stvisionary.business.partner.Fragment;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,10 +19,12 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.fashionove.stvisionary.business.partner.Activity.ChooseSmsTemplate;
+import com.fashionove.stvisionary.business.partner.Activity.Login;
 import com.fashionove.stvisionary.business.partner.Adapter.AdapterSmsCategory;
 import com.fashionove.stvisionary.business.partner.GetterSetter.SmsCategoryData;
 import com.fashionove.stvisionary.business.partner.Interface.ClickListener;
@@ -116,8 +120,11 @@ public class FragmentSmsCategory extends Fragment {
     public String getUrl()
     {
         String URL = "";
+        String accessToken = "";
 
-        URL = LinkDetails.URL.URL_SMS_CATEGORY;
+        SharedPreferences loginCredential = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        accessToken = loginCredential.getString("access_token","");
+        URL = LinkDetails.URL.URL_SMS_CATEGORY + "?token=" + accessToken;
 
         return URL;
     }
@@ -145,10 +152,21 @@ public class FragmentSmsCategory extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getActivity(),error.toString(),Toast.LENGTH_SHORT).show();
+
                 Log.i("Error",error.toString());
                 if (error instanceof NoConnectionError || error instanceof TimeoutError) {
 
+                }
+                if(error != null) {
+                    if (error instanceof ServerError) {
+                        SharedPreferences vendorData = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                        SharedPreferences.Editor editor = vendorData.edit();
+                        editor.putBoolean("logged_in", false);
+                        Toast.makeText(getActivity(), "Token expired,please login", Toast.LENGTH_SHORT).show();
+                        Intent nextScreen = new Intent(getActivity(), Login.class);
+                        nextScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(nextScreen);
+                    }
                 }
 
 

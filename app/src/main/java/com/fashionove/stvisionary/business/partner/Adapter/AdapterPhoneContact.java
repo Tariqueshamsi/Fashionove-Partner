@@ -104,27 +104,6 @@ public class AdapterPhoneContact extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
                 });
 
-            /*    if (data.getChecked() == 0) {
-                    ((ViewHolderContact) holder).checkBox.setChecked(false);
-                } else if (data.getChecked() == 1) {
-                    ((ViewHolderContact) holder).checkBox.setChecked(true);
-                }
-
-                ((ViewHolderContact) holder).checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                        if (isChecked == true ) {
-                            ((ViewHolderContact) holder).checkBox.setChecked(true);
-                            data.setChecked(1);
-
-                        } else if(isChecked == false ){
-                            ((ViewHolderContact) holder).checkBox.setChecked(false);
-                            data.setChecked(0);
-                        }
-                    }
-                });
-                */
 
                 break;
         }

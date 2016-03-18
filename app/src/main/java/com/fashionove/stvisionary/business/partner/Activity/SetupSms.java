@@ -1,10 +1,14 @@
 package com.fashionove.stvisionary.business.partner.Activity;
 
+import android.accounts.NetworkErrorException;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.app.FragmentManager;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,12 +17,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.fashionove.stvisionary.business.partner.Fragment.FragmentChooseContact;
 import com.fashionove.stvisionary.business.partner.GetterSetter.ContactData;
+import com.fashionove.stvisionary.business.partner.Network.VolleySingleton;
 import com.fashionove.stvisionary.business.partner.R;
 
+import static com.fashionove.stvisionary.business.partner.Extras.LinkDetails.URL.*;
+
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SetupSms extends AppCompatActivity implements FragmentChooseContact.ActivityCommunicator {
 
@@ -29,7 +46,12 @@ public class SetupSms extends AppCompatActivity implements FragmentChooseContact
     private TextView numberContactChoosen;
     private TextView smsDetails;
     private FragmentManager manager;
-    int pop = 0;
+    String numberText = "";
+    int mStatusCode = 0;
+
+    private VolleySingleton volleySingleton;
+    private RequestQueue requestQueue;
+    Map<String, String> params = new HashMap<String, String>();
 
     ArrayList<ContactData> listContact = new ArrayList<>();
 
@@ -45,11 +67,14 @@ public class SetupSms extends AppCompatActivity implements FragmentChooseContact
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        volleySingleton = VolleySingleton.getsInstance();
+        requestQueue = volleySingleton.getRequestQueue();
+
 
         addContactLayout = (RelativeLayout) findViewById(R.id.addContactNumber);
         sendSmsLayout = (RelativeLayout) findViewById(R.id.sendSms);
         numberContactChoosen = (TextView) findViewById(R.id.numberContactChoosen);
-        smsDetails = (TextView)findViewById(R.id.smsDetail);
+        smsDetails = (TextView) findViewById(R.id.smsDetail);
 
         addContactLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,11 +88,11 @@ public class SetupSms extends AppCompatActivity implements FragmentChooseContact
             @Override
             public void onClick(View v) {
                 //send sms to all the ContactData choosen
+                sendSmsDetailsToServer(getUrl());
             }
         });
 
-        if (templateName.isEmpty() == false)
-        {
+        if (templateName.isEmpty() == false) {
             smsDetails.setText(templateName);
         }
 
@@ -154,7 +179,117 @@ public class SetupSms extends AppCompatActivity implements FragmentChooseContact
         this.listContact = contactList;
         if (listContact != null) {
             numberContactChoosen.setText(String.valueOf(listContact.size()));
+            getNumber(contactList);
         }
+
+    }
+
+    public void getNumber(ArrayList<ContactData> contactList) {
+        String s = "";
+
+        for (int i = 0; i < contactList.size(); i++) {
+            s = s + filteredNumber(contactList.get(i).getNumber()) + ",";
+        }
+
+        if (s.isEmpty() != true) {
+            numberText = s;
+        }
+
+    }
+
+    public String filteredNumber(String number) {
+        String s = "";
+        int i = number.length() - 1;
+        char p = ' ';
+
+        while (i >= 0) {
+            p = number.charAt(i);
+            if (p == ' ') {
+                i--;
+            } else if (s.length() == 10) {
+                break;
+            } else {
+                s = s + p;
+                i--;
+            }
+        }
+
+        return s;
+    }
+
+    public String getUrl() {
+        String Url = "";
+        String accessToken = "";
+
+        SharedPreferences loginCredential = PreferenceManager.getDefaultSharedPreferences(this);
+        accessToken = loginCredential.getString("access_token", "");
+
+        if (numberText.isEmpty() == false) {
+            if (numberText.charAt(numberText.length() - 1) == ',') {
+                numberText = numberText.substring(0, numberText.length() - 1);
+            }
+        }
+
+        Url = URL_SEND_SMS + "?token=" + accessToken;
+
+
+        return Url.trim();
+    }
+
+    //call server to send smms details
+    public void sendSmsDetailsToServer(String url) {
+
+        StringRequest request = new StringRequest(Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(), "Sms send successfully", Toast.LENGTH_LONG).show();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                //invalid user credentials
+                if (error instanceof AuthFailureError) {
+                }
+
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Toast.makeText(getApplicationContext(), "Please check your internet connection", Toast.LENGTH_LONG).show();
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Log.i("contacts", numberText);
+                Log.i("message", templateName);
+                params.put("contacts", numberText);
+                params.put("message", templateName);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> pars = new HashMap<String, String>();
+                pars.put("Content-Type", "application/x-www-form-urlencoded");
+                return pars;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            protected void deliverResponse(String response) {
+                //Toast.makeText(getApplicationContext(), "Delivery = " + response, Toast.LENGTH_LONG).show();
+                super.deliverResponse(response);
+            }
+        };
+        requestQueue.add(request);
 
     }
 }

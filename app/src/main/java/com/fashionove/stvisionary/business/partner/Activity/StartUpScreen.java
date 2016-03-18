@@ -56,12 +56,12 @@ public class StartUpScreen extends AppCompatActivity {
     public void openIntent() {
         if (checkForAlreadyLogined()) {
             Intent intent = new Intent(this, Home.class);
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
 
         } else {
-            Intent nextScreen = new Intent(StartUpScreen.this,Home.class);
-            //nextScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Intent nextScreen = new Intent(StartUpScreen.this,Login.class);
+            nextScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(nextScreen);
 
         }
@@ -72,7 +72,7 @@ public class StartUpScreen extends AppCompatActivity {
 
         boolean flag = false;
         SharedPreferences loginData = PreferenceManager.getDefaultSharedPreferences(this);
-        if (loginData.getBoolean("logged_in", false) ){
+        if (loginData.getBoolean("logged_in", false) == true ){
             flag = true;
         }
 

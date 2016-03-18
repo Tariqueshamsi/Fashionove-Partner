@@ -3,8 +3,10 @@ package com.fashionove.stvisionary.business.partner.Fragment;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,9 +18,11 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.fashionove.stvisionary.business.partner.Activity.Login;
 import com.fashionove.stvisionary.business.partner.Activity.SetupSms;
 import com.fashionove.stvisionary.business.partner.Adapter.AdapterSmsTemplate;
 import com.fashionove.stvisionary.business.partner.GetterSetter.SmsTemplateData;
@@ -117,8 +121,13 @@ public class FragmentSmsTemplate extends Fragment {
 
     public String getUrl() {
         String URL = "";
+        String accessToken = "";
 
-        URL = LinkDetails.URL.URL_SMS_TEMPLATES + categoryId;
+        SharedPreferences loginCredential = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        accessToken = loginCredential.getString("access_token","");
+
+
+        URL = LinkDetails.URL.URL_SMS_TEMPLATES + categoryId + "?token=" + accessToken;
 
         return URL.trim();
     }
@@ -147,7 +156,19 @@ public class FragmentSmsTemplate extends Fragment {
 
 
                 if (error instanceof NoConnectionError || error instanceof TimeoutError) {
-                    Toast.makeText(getActivity(), "No Connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please check your data connection", Toast.LENGTH_SHORT).show();
+                }
+
+                if(error != null) {
+                    if (error instanceof ServerError ) {
+                        SharedPreferences vendorData = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                        SharedPreferences.Editor editor = vendorData.edit();
+                        editor.putBoolean("logged_in", false);
+                        Toast.makeText(getActivity(), "Token expired,please login", Toast.LENGTH_SHORT).show();
+                        Intent nextScreen = new Intent(getActivity(), Login.class);
+                        nextScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(nextScreen);
+                    }
                 }
 
 
@@ -176,7 +197,10 @@ public class FragmentSmsTemplate extends Fragment {
 
                     if (jsonObject.has(Keys.Endpoint.KEY_SMS_TEMPLATE_NAME) && !jsonObject.isNull(Keys.Endpoint.KEY_SMS_TEMPLATE_NAME)) {
                         templateName = jsonObject.getString(Keys.Endpoint.KEY_SMS_TEMPLATE_NAME);
+
+                        templateName = getConvertedTemplate(templateName);
                     }
+
 
                     SmsTemplateData smsTemplateData = new SmsTemplateData();
                     smsTemplateData.setTemplateId(templateId);
@@ -192,6 +216,35 @@ public class FragmentSmsTemplate extends Fragment {
             }
         }
 
+    }
+
+    public String getConvertedTemplate(String template)
+    {
+        int i = 0;
+        String s = "";
+        String vendorCompany = "";
+        char p = ' ',q =' ';
+        SharedPreferences loginCredential = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        vendorCompany = loginCredential.getString("vendor_company","");
+
+        template.trim();
+        while (i < template.length()-1)
+        {
+            p= template.charAt(i);
+            q=template.charAt(i+1);
+
+            if(p == '$' && q == '$')
+            {
+                s = s + vendorCompany +" " ;
+                i = i+2;
+            }else {
+                s = s + p;
+                i++;
+            }
+
+        }
+
+        return s;
     }
 
 }
