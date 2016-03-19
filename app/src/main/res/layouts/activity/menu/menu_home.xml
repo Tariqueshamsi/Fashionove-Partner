@@ -3,5 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.fashionove.stvisionary.business.partner.Activity.Home">
 
-   
+    <item android:id="@+id/logout"
+        android:title="Logout"
+        tools:showAsAction="never"/>
+
 </menu>

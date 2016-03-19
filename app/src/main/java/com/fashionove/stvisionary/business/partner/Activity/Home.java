@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -43,8 +44,10 @@ public class Home extends AppCompatActivity {
 
     private RelativeLayout layoutFacebook;
     private RelativeLayout layoutSms;
+    private TextView vendorCompanyName ;
 
     String vendorName = "";
+    String vendorCompany = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,8 @@ public class Home extends AppCompatActivity {
 
         SharedPreferences vendorData = PreferenceManager.getDefaultSharedPreferences(this);
         vendorName = vendorData.getString("vendor_name", "");
+        vendorCompany = vendorData.getString("vendor_company","");
+
         if (vendorName.isEmpty() == false) {
             getSupportActionBar().setTitle(vendorName);
         } else {
@@ -65,6 +70,7 @@ public class Home extends AppCompatActivity {
 
         layoutSms = (RelativeLayout) findViewById(R.id.middle_layout);
         layoutFacebook = (RelativeLayout) findViewById(R.id.bottom_layout);
+        vendorCompanyName = (TextView)findViewById(R.id.storeNameRow);
 
 
         layoutSms.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +94,10 @@ public class Home extends AppCompatActivity {
             }
         });
 
+        if (vendorCompany.isEmpty() == false)
+        {
+            vendorCompanyName.setText(vendorCompany);
+        }
 
     }
 
@@ -95,7 +105,7 @@ public class Home extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
 

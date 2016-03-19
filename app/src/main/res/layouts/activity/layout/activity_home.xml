@@ -51,35 +51,11 @@
                     android:shadowRadius="4"
                     android:text="Pranavi Creation"
                     android:textColor="@android:color/white"
-                    android:textSize="30sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/layout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/layout1">
 
-                <TextView
-                    android:id="@+id/locationAddressRow"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:fontFamily="Segoe UI"
-                    android:gravity="center"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:shadowColor="@color/text_shadow"
-                    android:shadowDx="1"
-                    android:shadowDy="1"
-                    android:shadowRadius="4"
-                    android:text="Salt lake,Kolkata"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp" />
-
-
-            </RelativeLayout>
         </RelativeLayout>
 
 
@@ -95,25 +71,11 @@
         android:layout_marginTop="5dp"
         android:background="@color/colorAccent">
 
-        <Button
-            android:id="@+id/sms_button"
-            android:layout_width="230dp"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="15dp"
-            android:layout_marginRight="5dp"
-
-            android:text="SEND SMS"
-            android:textColor="@color/colorAccent"
-            android:textSize="15sp" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="85dp"
-            android:layout_marginTop="20dp"
+            android:layout_centerInParent="true"
+            android:text="Sms Layout"
             android:textColor="@color/colorPrimaryHome"
             android:textScaleX="1"
             android:textSize="20sp" />
@@ -133,26 +95,13 @@
         android:layout_marginTop="5dp"
         android:background="@color/colorAccent">
 
-        <Button
-            android:id="@+id/fb_button"
-            android:layout_width="230dp"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="15dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="10dp"
-            android:text="Share on Facebook"
-            android:textColor="@color/colorAccent"
-            android:textSize="15sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="85dp"
-            android:layout_marginTop="5dp"
             android:textColor="@color/colorPrimaryHome"
+            android:text="Share on Facebook"
+            android:layout_centerInParent="true"
             android:textScaleX="1"
             android:textSize="20sp" />
 

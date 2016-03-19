@@ -52,6 +52,7 @@ public class SetupSms extends AppCompatActivity implements FragmentChooseContact
     private VolleySingleton volleySingleton;
     private RequestQueue requestQueue;
     Map<String, String> params = new HashMap<String, String>();
+    boolean flag = false;
 
     ArrayList<ContactData> listContact = new ArrayList<>();
 
@@ -88,7 +89,12 @@ public class SetupSms extends AppCompatActivity implements FragmentChooseContact
             @Override
             public void onClick(View v) {
                 //send sms to all the ContactData choosen
-                sendSmsDetailsToServer(getUrl());
+                if(flag == false)
+                {
+                    Toast.makeText(SetupSms.this,"Please select contact",Toast.LENGTH_SHORT).show();
+                }else {
+                    sendSmsDetailsToServer(getUrl());
+                }
             }
         });
 
@@ -180,6 +186,9 @@ public class SetupSms extends AppCompatActivity implements FragmentChooseContact
         if (listContact != null) {
             numberContactChoosen.setText(String.valueOf(listContact.size()));
             getNumber(contactList);
+            flag = true;
+        }else {
+            flag = false;
         }
 
     }
